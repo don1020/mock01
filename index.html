@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Placebo Effect</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .question { margin-bottom: 20px; }
+    .feedback { margin-top: 5px; font-weight: bold; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+  </style>
+</head>
+<body>
+  <h1>The Placebo Effect</h1>
+  <p>The placebo effect refers to the phenomenon in which a patient experiences a perceived or actual improvement in their condition after receiving a treatment that has no therapeutic effect. This treatment, called a placebo, is often a sugar pill or saline injection. Despite lacking any active medical ingredients, placebos can still produce real psychological and physiological responses in patients.</p>
+  <p>Researchers believe that the placebo effect is linked to a person's expectations and the brain’s ability to release natural substances, such as endorphins, that can relieve pain and promote healing. Brain scans of patients who respond to placebos show activity in areas related to emotion, awareness, and physical sensation.</p>
+  <p>The placebo effect is so powerful that it is now considered essential to include placebo groups in clinical trials. This allows scientists to separate the real effects of a treatment from the psychological impact of believing one is being treated.</p>
+
+  <hr>
+
+  <div class="question">
+    <p><strong>1. What does the placebo contain?</strong></p>
+    <select id="q1">
+      <option value="">--Select an answer--</option>
+      <option value="a">Natural painkillers</option>
+      <option value="b">No active medical ingredients</option>
+      <option value="c">A small amount of medicine</option>
+    </select>
+    <div id="f1" class="feedback"></div>
+  </div>
+
+  <div class="question">
+    <p><strong>2. What factor is believed to activate the placebo effect in patients?</strong></p>
+    <select id="q2">
+      <option value="">--Select an answer--</option>
+      <option value="a">Exercise</option>
+      <option value="b">Expectations</option>
+      <option value="c">Food and diet</option>
+    </select>
+    <div id="f2" class="feedback"></div>
+  </div>
+
+  <div class="question">
+    <p><strong>3. Why are placebos used in clinical trials?</strong></p>
+    <select id="q3">
+      <option value="">--Select an answer--</option>
+      <option value="a">To improve brain activity</option>
+      <option value="b">To heal emotional pain</option>
+      <option value="c">To compare psychological and real effects</option>
+    </select>
+    <div id="f3" class="feedback"></div>
+  </div>
+
+  <div class="question">
+    <p><strong>3. Why are placebos used in clinical trials?</strong></p>
+    <select id="q4">
+      <option value="">--Select an answer--</option>
+      <option value="a">To improve brain activity</option>
+      <option value="b">To heal emotional pain</option>
+      <option value="c">To compare psychological and real effects</option>
+    </select>
+    <div id="f4" class="feedback"></div>
+  </div>
+
+  <button onclick="checkAnswers()">Check Answers</button>
+
+  <script>
+    function checkAnswers() {
+      let score = 0;
+
+      const answers = {
+        q1: 'b',
+        q2: 'b',
+        q3: 'c',
+        q4: 'a'
+      };
+
+      for (let key in answers) {
+        const selected = document.getElementById(key).value;
+        const feedback = document.getElementById('f' + key.slice(1));
+
+        if (selected === answers[key]) {
+          feedback.textContent = 'Correct!';
+          feedback.className = 'feedback correct';
+          score++;
+        } else {
+          feedback.textContent = 'Incorrect.';
+          feedback.className = 'feedback incorrect';
+        }
+      }
+
+      alert('Your score: ' + score + ' out of 4');
+    }
+  </script>
+</body>
+</html>
