@@ -4,14 +4,32 @@
   <meta charset="UTF-8">
   <title>The Placebo Effect</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
+    body { font-family: Arial, sans-serif; margin: 20px; padding-top: 60px; }
     .question { margin-bottom: 20px; }
     .feedback { margin-top: 5px; font-weight: bold; }
-    .correct { color: green; }
-    .incorrect { color: red; }
+    .correct-answer { color: green; }
+    .incorrect-answer { color: red; }
+    .timer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #f9f9f9;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
+
+  <div class="timer">
+    Time left: <span id="timerDisplay">20:00</span>
+  </div>
+
   <h1>The Placebo Effect</h1>
   <p>The placebo effect refers to the phenomenon in which a patient experiences a perceived or actual improvement in their condition after receiving a treatment that has no therapeutic effect. This treatment, called a placebo, is often a sugar pill or saline injection. Despite lacking any active medical ingredients, placebos can still produce real psychological and physiological responses in patients.</p>
   <p>Researchers believe that the placebo effect is linked to a person's expectations and the brain’s ability to release natural substances, such as endorphins, that can relieve pain and promote healing. Brain scans of patients who respond to placebos show activity in areas related to emotion, awareness, and physical sensation.</p>
@@ -52,46 +70,65 @@
     <div id="f3" class="feedback"></div>
   </div>
 
-  <div class="question">
-    <p><strong>3. Why are placebos used in clinical trials?</strong></p>
-    <select id="q4">
-      <option value="">--Select an answer--</option>
-      <option value="a">To improve brain activity</option>
-      <option value="b">To heal emotional pain</option>
-      <option value="c">To compare psychological and real effects</option>
-    </select>
-    <div id="f4" class="feedback"></div>
-  </div>
-
   <button onclick="checkAnswers()">Check Answers</button>
+  <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
 
   <script>
-    function checkAnswers() {
-      let score = 0;
+    // Таймер
+    let timeLeft = 20 * 60; // 20 минут в секундах
+    const timerDisplay = document.getElementById("timerDisplay");
 
-      const answers = {
-        q1: 'b',
-        q2: 'b',
-        q3: 'c',
-        q4: 'a'
+    function updateTimer() {
+      const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const seconds = String(timeLeft % 60).padStart(2, '0');
+      timerDisplay.textContent = `${minutes}:${seconds}`;
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        alert("Time is up!");
+        checkAnswers();
+      }
+      timeLeft--;
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    // Проверка ответов
+    function checkAnswers() {
+      const correctAnswers = {
+        q1: "b",
+        q2: "b",
+        q3: "c"
       };
 
-      for (let key in answers) {
-        const selected = document.getElementById(key).value;
-        const feedback = document.getElementById('f' + key.slice(1));
+      let score = 0;
 
-        if (selected === answers[key]) {
-          feedback.textContent = 'Correct!';
-          feedback.className = 'feedback correct';
+      for (let i = 1; i <= 3; i++) {
+        const qid = "q" + i;
+        const select = document.getElementById(qid);
+        const feedback = document.getElementById("f" + i);
+        const userAnswer = select.value;
+
+        feedback.innerHTML = "";
+        feedback.className = "feedback";
+
+        if (userAnswer === "") {
+          feedback.textContent = "No answer selected.";
+          feedback.classList.add("incorrect-answer");
+        } else if (userAnswer === correctAnswers[qid]) {
+          feedback.textContent = "Correct!";
+          feedback.classList.add("correct-answer");
           score++;
         } else {
-          feedback.textContent = 'Incorrect.';
-          feedback.className = 'feedback incorrect';
+          const correctText = select.querySelector(`option[value="${correctAnswers[qid]}"]`).textContent;
+          feedback.innerHTML = `Incorrect. Correct answer: <span class="correct-answer">${correctText}</span>`;
+          feedback.classList.add("incorrect-answer");
         }
       }
 
-      alert('Your score: ' + score + ' out of 4');
+      document.getElementById("result").textContent = `Your score: ${score}/3`;
     }
   </script>
+
 </body>
 </html>
+
